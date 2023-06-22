@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import db from "./config/database"
+import db from './config/database';
 
 @Injectable()
 export class AppService {
