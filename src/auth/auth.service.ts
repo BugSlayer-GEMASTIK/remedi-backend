@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { AuthenticateDto } from './dto/authenticate.dto';
 import { IAuthenticate } from './interface/user.interface';
 import db from 'src/config/database';
@@ -8,52 +12,92 @@ import { ProfileDto } from './dto/profile.dto';
 
 @Injectable()
 export class AuthService {
-    async authenticate(authenticateDto: AuthenticateDto): Promise<IAuthenticate> {
-        const user = await db.selectFrom("User")
-            .where('email', '=', authenticateDto.email)
-            .selectAll()
-            .executeTakeFirst();
-        
-        if (!user) throw new NotFoundException(`User with email ${authenticateDto.email} is not found`);
+  async authenticate(authenticateDto: AuthenticateDto): Promise<IAuthenticate> {
+    const user = await db
+      .selectFrom('User')
+      .where('email', '=', authenticateDto.email)
+      .selectAll()
+      .executeTakeFirst();
 
-        if (!this.comparePassword(authenticateDto.password, user.password)) {
-            throw new BadRequestException('Invalid password');
-        }
+    if (!user)
+      throw new NotFoundException(
+        `User with email ${authenticateDto.email} is not found`,
+      );
 
-        const token = sign({payload: {email: user.email, role: user.role}}, 'secret')
-        return { user, token };
+    if (!this.comparePassword(authenticateDto.password, user.password)) {
+      throw new BadRequestException('Invalid password');
     }
 
-    async register(profileDto: ProfileDto){
-        const hashedPassword = this.hashPassword(profileDto.password);
+    const token = sign(
+      { payload: { email: user.email, role: user.role } },
+      'secret',
+    );
+    return { user, token };
+  }
 
-        const user = await db.selectFrom("User")
-            .where('email', '=', profileDto.email)
-            .selectAll()
-            .executeTakeFirst();
-        
-        if (user) throw new BadRequestException('Email is used');
-        
-        await db.insertInto("User")
-            .values({
-                email: profileDto.email,    
-                name: profileDto.name,
-                password: await hashedPassword,
-                role: profileDto.role,
-                birth_date: profileDto.birthDate,
-                phoneNumber: profileDto.phoneNumber,
-                locationLatitude: profileDto.locationLatitude,
-                locationLongitude: profileDto.locationLongitude
-            })
+  async register(profileDto: ProfileDto) {
+    const {
+      email,
+      password,
+      locationLatitude,
+      locationLongitude,
+      name,
+      phoneNumber,
+      birthDate,
+      role,
+    } = profileDto;
+
+    const hashedPassword = await this.hashPassword(password);
+
+    const user = await db
+      .selectFrom('User')
+      .selectAll()
+      .where('email', '=', email)
+      .executeTakeFirst();
+
+    if (user) throw new BadRequestException('Email is used');
+
+    const location = await db
+      .selectFrom('Location')
+      .selectAll()
+      .where('latitude', '=', locationLatitude)
+      .where('longitude', '=', locationLongitude)
+      .executeTakeFirst();
+
+    if (!location) {
+      await db
+        .insertInto('Location')
+        .values({
+          latitude: locationLatitude,
+          longitude: locationLongitude,
+        })
+        .execute();
     }
 
-    async hashPassword(plainText: string): Promise<string> {
-        const salt = await bcrypt.genSalt();
-        const hashPassword = await bcrypt.hash(plainText, salt);
-        return hashPassword;
-    }
+    db.insertInto('User')
+      .values({
+        email: email,
+        name: name,
+        password: hashedPassword,
+        role: role,
+        birth_date: birthDate,
+        phoneNumber: phoneNumber,
+        locationLatitude: locationLatitude,
+        locationLongitude: locationLongitude,
+      })
+      .execute();
+  }
 
-    async comparePassword(password: string, hashedPassword: string): Promise<boolean> {
-        return bcrypt.compare(password, hashedPassword);
-    }
+  async hashPassword(plainText: string): Promise<string> {
+    const salt = await bcrypt.genSalt();
+    const hashPassword = await bcrypt.hash(plainText, salt);
+    return hashPassword;
+  }
+
+  async comparePassword(
+    password: string,
+    hashedPassword: string,
+  ): Promise<boolean> {
+    return bcrypt.compare(password, hashedPassword);
+  }
 }
