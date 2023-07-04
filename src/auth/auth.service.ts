@@ -30,7 +30,7 @@ export class AuthService {
 
     const token = sign(
       { payload: { email: user.email, role: user.role } },
-      'secret',
+      process.env.JWT_SECRET as string,
     );
     return { user, token };
   }
