@@ -28,9 +28,10 @@ export class AuthService {
       throw new BadRequestException('Invalid password');
     }
 
+    const expiresIn = '1h';
     const token = sign(
       { payload: { email: user.email, role: user.role } },
-      process.env.JWT_SECRET as string,
+      process.env.JWT_SECRET as string, { expiresIn }
     );
     return { user, token };
   }
