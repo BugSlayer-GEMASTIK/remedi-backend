@@ -30,7 +30,7 @@ export class AuthService {
 
     const expiresIn = '1h';
     const token = sign(
-      { payload: { email: user.email, role: user.role } },
+      { email: user.email, role: user.role },
       process.env.JWT_SECRET as string, { expiresIn }
     );
     return { user, token };
