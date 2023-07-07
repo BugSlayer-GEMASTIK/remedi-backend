@@ -9,13 +9,27 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { JwtStrategy } from './auth/jwt.strategy';
+import { MedicinesModule } from './medicines/medicines.module';
+import { DiseasesModule } from './diseases/diseases.module';
+import { AllergiesModule } from './allergies/allergies.module';
+import { TreatmentsModule } from './treatments/treatments.module';
+import { TreatmentCategoriesModule } from './treatment-categories/treatment-categories.module';
+import { LabResultsModule } from './lab-results/lab-results.module';
+import { LabResultCategoriesModule } from './lab-result-categories/lab-result-categories.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(), 
     AuthModule,
     PassportModule,
-    JwtModule.register({ secret: process.env.JWT_SECRET as string, signOptions: { expiresIn: '1h' } })
+    JwtModule.register({ secret: process.env.JWT_SECRET as string, signOptions: { expiresIn: '1h' } }),
+    MedicinesModule,
+    DiseasesModule,
+    AllergiesModule,
+    TreatmentsModule,
+    TreatmentCategoriesModule,
+    LabResultsModule,
+    LabResultCategoriesModule
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService, JwtStrategy],

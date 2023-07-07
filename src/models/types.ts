@@ -6,23 +6,23 @@ export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export type AllergyMedicine = {
   patientEmail: string;
-  medicineId: string;
+  medicineId: number;
   diagnosedAt: Generated<Timestamp>;
 };
 export type Diagnose = {
-  id: string;
+  id: Generated<number>;
   name: string;
   category: string;
 };
 export type LabResultCategory = {
-  id: string;
+  id: Generated<number>;
   category: string;
 };
 export type LabResultUser = {
-  id: string;
-  category: string;
+  id: Generated<number>;
+  category: number;
   patientEmail: string;
-  result_document_URL: string;
+  resultDocumentURL: string;
   description: string | null;
   doctorEmail: string;
 };
@@ -31,29 +31,29 @@ export type Location = {
   longitude: string;
 };
 export type Medicine = {
-  id: string;
+  id: Generated<number>;
   name: string;
 };
 export type MedicineRecord = {
-  recordId: string;
-  medicineId: string;
+  recordId: number;
+  medicineId: number;
   dose: string;
 };
 export type Record = {
-  id: string;
+  id: Generated<number>;
   doctorEmail: string;
   patientEmail: string;
   createdAt: Generated<Timestamp>;
   description: string | null;
-  diagnoseId: string | null;
+  diagnoseId: number | null;
 };
 export type TreatmentCategory = {
-  id: string;
+  id: Generated<number>;
   category: string;
 };
 export type TreatmentUser = {
-  id: string;
-  category: string;
+  id: Generated<number>;
+  category: number;
   patientEmail: string;
   treatmentAt: Generated<Timestamp>;
   description: string | null;
@@ -64,7 +64,7 @@ export type User = {
   name: string | null;
   password: string | null;
   role: string | null;
-  birth_date: Timestamp | null;
+  birthDate: Timestamp | null;
   phoneNumber: string | null;
   locationLatitude: string;
   locationLongitude: string;
