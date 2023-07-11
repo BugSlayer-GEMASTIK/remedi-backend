@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
@@ -16,10 +15,12 @@ import { TreatmentsModule } from './treatments/treatments.module';
 import { TreatmentCategoriesModule } from './treatment-categories/treatment-categories.module';
 import { LabResultsModule } from './lab-results/lab-results.module';
 import { LabResultCategoriesModule } from './lab-result-categories/lab-result-categories.module';
+import { RecordModule } from './record/record.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(), 
+    ConfigModule.forRoot(),
     AuthModule,
     PassportModule,
     JwtModule.register({ secret: process.env.JWT_SECRET as string, signOptions: { expiresIn: '1h' } }),
@@ -29,7 +30,9 @@ import { LabResultCategoriesModule } from './lab-result-categories/lab-result-ca
     TreatmentsModule,
     TreatmentCategoriesModule,
     LabResultsModule,
-    LabResultCategoriesModule
+    LabResultCategoriesModule,
+    RecordModule,
+    CommonModule
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService, JwtStrategy],

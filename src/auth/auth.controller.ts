@@ -1,8 +1,16 @@
-import { HttpStatus, Controller, Res, Body, Post, Req, Get } from '@nestjs/common';
+import {
+  HttpStatus,
+  Controller,
+  Res,
+  Body,
+  Post,
+  Req,
+  Get,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthenticateDto } from './dto/authenticate.dto';
 import { ProfileDto } from './dto/profile.dto';
-import { UseGuards } from '@nestjs/common'
+import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from './jwt.guard';
 import { RoleGuard } from './role/role.guard';
 import { Roles } from './roles/roles.decorator';
@@ -16,7 +24,7 @@ export class AuthController {
   @Get()
   async profile(@Req() req, @Res() res) {
     return res.status(HttpStatus.OK).json(req.user);
-  } 
+  }
 
   @Post('login')
   async login(@Res() res, @Body() authenticateDto: AuthenticateDto) {

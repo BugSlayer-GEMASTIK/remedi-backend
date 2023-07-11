@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 export class RoleGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
-  matchRoles(roles: string[], userRole: string){
+  matchRoles(roles: string[], userRole: string) {
     return roles.some((role) => role == userRole);
   }
 
@@ -20,6 +20,6 @@ export class RoleGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    return this.matchRoles(roles, user.role)
+    return this.matchRoles(roles, user.role);
   }
 }
