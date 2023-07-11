@@ -49,14 +49,16 @@ export class TreatmentsService {
 
   async update(id: number, updateTreatmentDto: UpdateTreatmentDto) {
     if (updateTreatmentDto.description) {
-      await db.updateTable('TreatmentUser')
+      await db
+        .updateTable('TreatmentUser')
         .set({ description: updateTreatmentDto.description })
         .where('TreatmentUser.id', '=', id)
         .execute();
     }
 
     if (updateTreatmentDto.category) {
-      await db.updateTable('TreatmentUser')
+      await db
+        .updateTable('TreatmentUser')
         .set({ category: updateTreatmentDto.category })
         .where('TreatmentUser.id', '=', id)
         .execute();

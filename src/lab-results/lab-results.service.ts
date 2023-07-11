@@ -50,21 +50,24 @@ export class LabResultsService {
 
   async update(id: number, updateLabResultDto: UpdateLabResultDto) {
     if (updateLabResultDto.category) {
-      await db.updateTable('LabResultUser')
+      await db
+        .updateTable('LabResultUser')
         .set({ category: updateLabResultDto.category })
         .where('LabResultUser.id', '=', id)
         .execute();
     }
 
     if (updateLabResultDto.resultDocumentURL) {
-      await db.updateTable('LabResultUser')
+      await db
+        .updateTable('LabResultUser')
         .set({ resultDocumentURL: updateLabResultDto.resultDocumentURL })
         .where('LabResultUser.id', '=', id)
         .execute();
     }
 
     if (updateLabResultDto.description) {
-      await db.updateTable('LabResultUser')
+      await db
+        .updateTable('LabResultUser')
         .set({ description: updateLabResultDto.description })
         .where('LabResultUser.id', '=', id)
         .execute();
