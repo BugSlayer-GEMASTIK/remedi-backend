@@ -6,11 +6,15 @@ import db from 'src/config/database';
 @Injectable()
 export class DiseasesService {
   async create(createDiseaseDto: CreateDiseaseDto) {
-    const { name, category } = createDiseaseDto
+    const { name, category } = createDiseaseDto;
 
-    const disease = await db.selectFrom('Diagnose').where('name', '=', name).selectAll().executeTakeFirst()
+    const disease = await db
+      .selectFrom('Diagnose')
+      .where('name', '=', name)
+      .selectAll()
+      .executeTakeFirst();
 
-    if (!!disease) throw new BadRequestException('Disease already exist')
+    if (!!disease) throw new BadRequestException('Disease already exist');
 
     return await db
       .insertInto('Diagnose')
