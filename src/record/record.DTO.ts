@@ -14,7 +14,27 @@ export class CreateRecordDTO {
 
   @IsString()
   diagnoseName: string;
+}
+
+export class UpdateRecordDTO {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
 
   @IsString()
-  medicineName: string
+  @IsNotEmpty()
+  doctorEmail: string;
+
+  @IsString()
+  @IsNotEmpty()
+  patientEmail: string;
+
+  @IsString()
+  description: string;
+
+  @IsString()
+  diagnoseName: string;
+
+  @IsString()
+  medicineName: string;
 }
