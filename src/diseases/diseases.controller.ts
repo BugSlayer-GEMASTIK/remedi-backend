@@ -1,8 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Query, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Query,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { DiseasesService } from './diseases.service';
 import { CreateDiseaseDto } from './dto/create-disease.dto';
 import { UpdateDiseaseDto } from './dto/update-disease.dto';
-import { UseGuards } from '@nestjs/common'
+import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
 import { Roles } from 'src/auth/roles/roles.decorator';
@@ -11,7 +20,7 @@ import { Roles } from 'src/auth/roles/roles.decorator';
 export class DiseasesController {
   constructor(private readonly diseasesService: DiseasesService) {}
 
-  @Roles("DOCTOR")
+  @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
   create(@Body() createDiseaseDto: CreateDiseaseDto) {
@@ -23,19 +32,19 @@ export class DiseasesController {
     return this.diseasesService.findAll();
   }
 
-  @Get("query?")
+  @Get('query?')
   findByCategory(@Query('category') category: string) {
     return this.diseasesService.findByCategory(category);
   }
 
-  @Roles("DOCTOR")
+  @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateDiseaseDto: UpdateDiseaseDto) {
     return this.diseasesService.update(id, updateDiseaseDto);
   }
 
-  @Roles("DOCTOR")
+  @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
   remove(@Param('id') id: number) {

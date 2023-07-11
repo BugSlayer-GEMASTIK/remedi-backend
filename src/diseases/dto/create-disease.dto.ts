@@ -1,4 +1,4 @@
 export class CreateDiseaseDto {
-    readonly name: string;
-    readonly category: string
+  readonly name: string;
+  readonly category: string;
 }

@@ -1,3 +1,3 @@
 export class CreateMedicineDto {
-    readonly name: string
+  readonly name: string;
 }

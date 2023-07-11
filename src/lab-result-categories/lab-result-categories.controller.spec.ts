@@ -11,7 +11,9 @@ describe('LabResultCategoriesController', () => {
       providers: [LabResultCategoriesService],
     }).compile();
 
-    controller = module.get<LabResultCategoriesController>(LabResultCategoriesController);
+    controller = module.get<LabResultCategoriesController>(
+      LabResultCategoriesController,
+    );
   });
 
   it('should be defined', () => {

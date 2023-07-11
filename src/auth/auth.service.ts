@@ -23,8 +23,11 @@ export class AuthService {
       throw new NotFoundException(
         `User with email ${authenticateDto.email} is not found`,
       );
-      
-    const isPasswordTheSame = await this.comparePassword(authenticateDto.password, user.password)
+
+    const isPasswordTheSame = await this.comparePassword(
+      authenticateDto.password,
+      user.password,
+    );
     if (!isPasswordTheSame) {
       throw new BadRequestException('Invalid password');
     }

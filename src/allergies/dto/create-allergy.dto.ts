@@ -1,4 +1,4 @@
 export class CreateAllergyDto {
-    readonly patientEmail: string;
-    readonly medicineId: number
+  readonly patientEmail: string;
+  readonly medicineId: number;
 }

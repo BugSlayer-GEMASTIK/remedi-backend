@@ -6,34 +6,35 @@ import db from 'src/config/database';
 @Injectable()
 export class LabResultCategoriesService {
   create(createLabResultCategoryDto: CreateLabResultCategoryDto) {
-    return db.insertInto("LabResultCategory")
-            .values({
-              category: createLabResultCategoryDto.category
-            })
-            .returningAll()
-            .executeTakeFirst();
+    return db
+      .insertInto('LabResultCategory')
+      .values({
+        category: createLabResultCategoryDto.category,
+      })
+      .returningAll()
+      .executeTakeFirst();
   }
 
   findAll() {
-    return db.selectFrom("LabResultCategory")
-            .selectAll()
-            .execute();
+    return db.selectFrom('LabResultCategory').selectAll().execute();
   }
 
   update(id: number, updateLabResultCategoryDto: UpdateLabResultCategoryDto) {
-    return db.updateTable("LabResultCategory")
-            .set({
-              category: updateLabResultCategoryDto.category
-            })
-            .where("LabResultCategory.id", "=", id)
-            .returningAll()
-            .executeTakeFirst();
+    return db
+      .updateTable('LabResultCategory')
+      .set({
+        category: updateLabResultCategoryDto.category,
+      })
+      .where('LabResultCategory.id', '=', id)
+      .returningAll()
+      .executeTakeFirst();
   }
 
   remove(id: number) {
-    return db.deleteFrom("LabResultCategory")
-            .where("LabResultCategory.id", "=", id)
-            .returningAll()
-            .executeTakeFirst();
+    return db
+      .deleteFrom('LabResultCategory')
+      .where('LabResultCategory.id', '=', id)
+      .returningAll()
+      .executeTakeFirst();
   }
 }
