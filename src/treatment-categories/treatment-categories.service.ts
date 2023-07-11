@@ -5,8 +5,8 @@ import db from 'src/config/database';
 
 @Injectable()
 export class TreatmentCategoriesService {
-  create(createTreatmentCategoryDto: CreateTreatmentCategoryDto) {
-    return db
+  async create(createTreatmentCategoryDto: CreateTreatmentCategoryDto) {
+    return await db
       .insertInto('TreatmentCategory')
       .values({
         category: createTreatmentCategoryDto.category,
@@ -15,12 +15,12 @@ export class TreatmentCategoriesService {
       .executeTakeFirst();
   }
 
-  findAll() {
-    return db.selectFrom('TreatmentCategory').selectAll().execute();
+  async findAll() {
+    return await db.selectFrom('TreatmentCategory').selectAll().execute();
   }
 
-  update(id: number, updateTreatmentCategoryDto: UpdateTreatmentCategoryDto) {
-    return db
+  async update(id: number, updateTreatmentCategoryDto: UpdateTreatmentCategoryDto) {
+    return await db
       .updateTable('TreatmentCategory')
       .set({
         category: updateTreatmentCategoryDto.category,
@@ -30,8 +30,8 @@ export class TreatmentCategoriesService {
       .executeTakeFirst();
   }
 
-  remove(id: number) {
-    return db
+  async remove(id: number) {
+    return await db
       .deleteFrom('TreatmentCategory')
       .where('TreatmentCategory.id', '=', id)
       .returningAll()

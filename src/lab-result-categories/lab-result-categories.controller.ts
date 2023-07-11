@@ -15,7 +15,7 @@ import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
 import { Roles } from 'src/auth/roles/roles.decorator';
 
-@Controller('lab-result-categories')
+@Controller('lab/result')
 export class LabResultCategoriesController {
   constructor(
     private readonly labResultCategoriesService: LabResultCategoriesService,
@@ -24,25 +24,25 @@ export class LabResultCategoriesController {
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
-  create(@Body() createLabResultCategoryDto: CreateLabResultCategoryDto) {
-    return this.labResultCategoriesService.create(createLabResultCategoryDto);
+  async create(@Body() createLabResultCategoryDto: CreateLabResultCategoryDto) {
+    return await this.labResultCategoriesService.create(createLabResultCategoryDto);
   }
 
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get()
-  findAll() {
-    return this.labResultCategoriesService.findAll();
+  async findAll() {
+    return await this.labResultCategoriesService.findAll();
   }
 
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: number,
     @Body() updateLabResultCategoryDto: UpdateLabResultCategoryDto,
   ) {
-    return this.labResultCategoriesService.update(
+    return await this.labResultCategoriesService.update(
       id,
       updateLabResultCategoryDto,
     );
@@ -51,7 +51,7 @@ export class LabResultCategoriesController {
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.labResultCategoriesService.remove(id);
+  async remove(@Param('id') id: number) {
+    return await this.labResultCategoriesService.remove(id);
   }
 }

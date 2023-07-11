@@ -5,8 +5,8 @@ import db from 'src/config/database';
 
 @Injectable()
 export class TreatmentsService {
-  create(createTreatmentDto: CreateTreatmentDto, doctorEmail: string) {
-    return db
+  async create(createTreatmentDto: CreateTreatmentDto, doctorEmail: string) {
+    return await db
       .insertInto('TreatmentUser')
       .values({
         category: createTreatmentDto.category,
@@ -18,24 +18,24 @@ export class TreatmentsService {
       .executeTakeFirst();
   }
 
-  findTreatmentsByDoctor(doctorEmail: string) {
-    return db
+  async findTreatmentsByDoctor(doctorEmail: string) {
+    return await db
       .selectFrom('TreatmentUser')
       .where('TreatmentUser.doctorEmail', '=', doctorEmail)
       .selectAll()
       .execute();
   }
 
-  findByPatient(patientEmail: string) {
-    return db
+  async findByPatient(patientEmail: string) {
+    return await db
       .selectFrom('TreatmentUser')
       .where('TreatmentUser.patientEmail', '=', patientEmail)
       .selectAll()
       .execute();
   }
 
-  findByCategoryAndPatient(categoryId: number, patientEmail: string) {
-    return db
+  async findByCategoryAndPatient(categoryId: number, patientEmail: string) {
+    return await db
       .selectFrom('TreatmentUser')
       .where(({ cmpr, and }) =>
         and([
@@ -47,39 +47,39 @@ export class TreatmentsService {
       .execute();
   }
 
-  update(id: number, updateTreatmentDto: UpdateTreatmentDto) {
+  async update(id: number, updateTreatmentDto: UpdateTreatmentDto) {
     if (updateTreatmentDto.description) {
-      db.updateTable('TreatmentUser')
+      await db.updateTable('TreatmentUser')
         .set({ description: updateTreatmentDto.description })
         .where('TreatmentUser.id', '=', id)
         .execute();
     }
 
     if (updateTreatmentDto.category) {
-      db.updateTable('TreatmentUser')
+      await db.updateTable('TreatmentUser')
         .set({ category: updateTreatmentDto.category })
         .where('TreatmentUser.id', '=', id)
         .execute();
     }
 
     // Patient's email cannot be changed
-    return db
+    return await db
       .selectFrom('TreatmentUser')
       .where('TreatmentUser.id', '=', id)
       .selectAll()
       .executeTakeFirst();
   }
 
-  remove(id: number) {
-    return db
+  async remove(id: number) {
+    return await db
       .deleteFrom('TreatmentUser')
       .where('TreatmentUser.id', '=', id)
       .returningAll()
       .executeTakeFirst();
   }
 
-  findDoctorByTreatmentId(id: number) {
-    return db
+  async findDoctorByTreatmentId(id: number) {
+    return await db
       .selectFrom('TreatmentUser')
       .where('TreatmentUser.id', '=', id)
       .select(['TreatmentUser.doctorEmail'])

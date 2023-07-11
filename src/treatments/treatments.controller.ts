@@ -26,34 +26,34 @@ export class TreatmentsController {
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
-  create(@Req() req, @Body() createTreatmentDto: CreateTreatmentDto) {
-    return this.treatmentsService.create(createTreatmentDto, req.user.email);
+  async create(@Req() req, @Body() createTreatmentDto: CreateTreatmentDto) {
+    return await this.treatmentsService.create(createTreatmentDto, req.user.email);
   }
 
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('/doctor')
-  findTreatmentsByDoctor(@Req() req) {
-    return this.treatmentsService.findTreatmentsByDoctor(req.user.email);
+  async findTreatmentsByDoctor(@Req() req) {
+    return await this.treatmentsService.findTreatmentsByDoctor(req.user.email);
   }
 
   @Roles('DOCTOR', 'PATIENT')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('pasien?')
-  findByPatient(@Req() req, @Query('email') email: string) {
+  async findByPatient(@Req() req, @Query('email') email: string) {
     if (req.user.role == 'PATIENT' && req.user.email != email) {
       throw new HttpException(
         "You are not allowed to see another person's treatment history",
         HttpStatus.FORBIDDEN,
       );
     }
-    return this.treatmentsService.findByPatient(email);
+    return await this.treatmentsService.findByPatient(email);
   }
 
   @Roles('DOCTOR', 'PATIENT')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('query?')
-  findByCategoryAndPatient(
+  async findByCategoryAndPatient(
     @Req() req,
     @Query('category') treatmentCategory: number,
     @Query('email') email: string,
@@ -64,7 +64,7 @@ export class TreatmentsController {
         HttpStatus.FORBIDDEN,
       );
     }
-    return this.treatmentsService.findByCategoryAndPatient(
+    return await this.treatmentsService.findByCategoryAndPatient(
       treatmentCategory,
       email,
     );
@@ -86,7 +86,7 @@ export class TreatmentsController {
         HttpStatus.FORBIDDEN,
       );
     }
-    return this.treatmentsService.update(id, updateTreatmentDto);
+    return await this.treatmentsService.update(id, updateTreatmentDto);
   }
 
   @Roles('DOCTOR')
@@ -101,6 +101,6 @@ export class TreatmentsController {
         HttpStatus.FORBIDDEN,
       );
     }
-    return this.treatmentsService.remove(id);
+    return await this.treatmentsService.remove(id);
   }
 }
