@@ -5,8 +5,8 @@ import db from 'src/config/database';
 
 @Injectable()
 export class LabResultsService {
-  create(createLabResultDto: CreateLabResultDto, doctorEmail: string) {
-    return db
+  async create(createLabResultDto: CreateLabResultDto, doctorEmail: string) {
+    return await db
       .insertInto('LabResultUser')
       .values({
         category: createLabResultDto.category,
@@ -19,24 +19,24 @@ export class LabResultsService {
       .executeTakeFirst();
   }
 
-  findLabResultsByDoctor(email: string) {
-    return db
+  async findLabResultsByDoctor(email: string) {
+    return await db
       .selectFrom('LabResultUser')
       .where('LabResultUser.doctorEmail', '=', email)
       .selectAll()
       .execute();
   }
 
-  findByPatient(patientEmail: string) {
-    return db
+  async findByPatient(patientEmail: string) {
+    return await db
       .selectFrom('LabResultUser')
       .where('LabResultUser.patientEmail', '=', patientEmail)
       .selectAll()
       .execute();
   }
 
-  findByCategoryAndPatient(categoryId: number, email: string) {
-    return db
+  async findByCategoryAndPatient(categoryId: number, email: string) {
+    return await db
       .selectFrom('LabResultUser')
       .where(({ cmpr, and }) =>
         and([
@@ -48,45 +48,45 @@ export class LabResultsService {
       .execute();
   }
 
-  update(id: number, updateLabResultDto: UpdateLabResultDto) {
+  async update(id: number, updateLabResultDto: UpdateLabResultDto) {
     if (updateLabResultDto.category) {
-      db.updateTable('LabResultUser')
+      await db.updateTable('LabResultUser')
         .set({ category: updateLabResultDto.category })
         .where('LabResultUser.id', '=', id)
         .execute();
     }
 
     if (updateLabResultDto.resultDocumentURL) {
-      db.updateTable('LabResultUser')
+      await db.updateTable('LabResultUser')
         .set({ resultDocumentURL: updateLabResultDto.resultDocumentURL })
         .where('LabResultUser.id', '=', id)
         .execute();
     }
 
     if (updateLabResultDto.description) {
-      db.updateTable('LabResultUser')
+      await db.updateTable('LabResultUser')
         .set({ description: updateLabResultDto.description })
         .where('LabResultUser.id', '=', id)
         .execute();
     }
 
-    return db
+    return await db
       .selectFrom('LabResultUser')
       .where('LabResultUser.id', '=', id)
       .selectAll()
       .executeTakeFirst();
   }
 
-  remove(id: number) {
-    return db
+  async remove(id: number) {
+    return await db
       .deleteFrom('LabResultUser')
       .where('LabResultUser.id', '=', id)
       .returningAll()
       .executeTakeFirst();
   }
 
-  findDoctorByLabResultId(id: number) {
-    return db
+  async findDoctorByLabResultId(id: number) {
+    return await db
       .selectFrom('LabResultUser')
       .where('LabResultUser.id', '=', id)
       .select(['LabResultUser.doctorEmail'])

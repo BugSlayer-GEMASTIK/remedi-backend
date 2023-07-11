@@ -26,34 +26,34 @@ export class LabResultsController {
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
-  create(@Req() req, @Body() createLabResultDto: CreateLabResultDto) {
-    return this.labResultsService.create(createLabResultDto, req.user.email);
+  async create(@Req() req, @Body() createLabResultDto: CreateLabResultDto) {
+    return await this.labResultsService.create(createLabResultDto, req.user.email);
   }
 
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('/doctor')
-  findLabResultsByDoctor(@Req() req) {
-    return this.labResultsService.findLabResultsByDoctor(req.user.email);
+  async findLabResultsByDoctor(@Req() req) {
+    return await this.labResultsService.findLabResultsByDoctor(req.user.email);
   }
 
   @Roles('DOCTOR', 'PATIENT')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('pasien?')
-  findByPatient(@Req() req, @Query('email') email: string) {
+  async findByPatient(@Req() req, @Query('email') email: string) {
     if (req.user.role == 'PATIENT' && req.user.email != email) {
       throw new HttpException(
         "You are not allowed to see another person's lab results.",
         HttpStatus.FORBIDDEN,
       );
     }
-    return this.labResultsService.findByPatient(email);
+    return await this.labResultsService.findByPatient(email);
   }
 
   @Roles('DOCTOR', 'PATIENT')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('query?')
-  findByCategoryAndPatient(
+  async findByCategoryAndPatient(
     @Req() req,
     @Query('category') labResultCategory: number,
     @Query('email') email: string,
@@ -64,7 +64,7 @@ export class LabResultsController {
         HttpStatus.FORBIDDEN,
       );
     }
-    return this.labResultsService.findByCategoryAndPatient(
+    return await this.labResultsService.findByCategoryAndPatient(
       labResultCategory,
       email,
     );
@@ -86,7 +86,7 @@ export class LabResultsController {
         HttpStatus.FORBIDDEN,
       );
     }
-    return this.labResultsService.update(id, updateLabResultDto);
+    return await this.labResultsService.update(id, updateLabResultDto);
   }
 
   @Roles('DOCTOR')
@@ -101,6 +101,6 @@ export class LabResultsController {
         HttpStatus.FORBIDDEN,
       );
     }
-    return this.labResultsService.remove(id);
+    return await this.labResultsService.remove(id);
   }
 }

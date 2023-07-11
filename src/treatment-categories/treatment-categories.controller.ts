@@ -24,25 +24,25 @@ export class TreatmentCategoriesController {
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
-  create(@Body() createTreatmentCategoryDto: CreateTreatmentCategoryDto) {
-    return this.treatmentCategoriesService.create(createTreatmentCategoryDto);
+  async create(@Body() createTreatmentCategoryDto: CreateTreatmentCategoryDto) {
+    return await this.treatmentCategoriesService.create(createTreatmentCategoryDto);
   }
 
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get()
-  findAll() {
-    return this.treatmentCategoriesService.findAll();
+  async findAll() {
+    return await this.treatmentCategoriesService.findAll();
   }
 
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: number,
     @Body() updateTreatmentCategoryDto: UpdateTreatmentCategoryDto,
   ) {
-    return this.treatmentCategoriesService.update(
+    return await this.treatmentCategoriesService.update(
       id,
       updateTreatmentCategoryDto,
     );
@@ -51,7 +51,7 @@ export class TreatmentCategoriesController {
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.treatmentCategoriesService.remove(id);
+  async remove(@Param('id') id: number) {
+    return await this.treatmentCategoriesService.remove(id);
   }
 }
