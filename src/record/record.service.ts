@@ -7,13 +7,13 @@ export class RecordService {
   async createRecord(data: CreateRecordDTO) {
     const { doctorEmail, patientEmail, description, diagnoseName } = data;
 
-    const doctor = await this.getUserByEmail(doctorEmail)
+    const doctor = await this.getUserByEmail(doctorEmail);
 
     if (!doctor) {
       throw new BadRequestException('Doctor not found');
     }
 
-    const pasien = await this.getUserByEmail(patientEmail)
+    const pasien = await this.getUserByEmail(patientEmail);
 
     if (!pasien) {
       throw new BadRequestException('Patient not found');
@@ -108,7 +108,7 @@ export class RecordService {
       throw new BadRequestException('Invalid doctor email');
     }
 
-    const pasien = await this.getUserByEmail(patientEmail)
+    const pasien = await this.getUserByEmail(patientEmail);
 
     if (!pasien) {
       throw new BadRequestException('Patient not found');
@@ -135,7 +135,11 @@ export class RecordService {
     return { ...updatedRecord };
   }
 
-  private async getUserByEmail(email: string){
-    return await db.selectFrom('User').where('email', '=', email).selectAll().executeTakeFirst()
+  private async getUserByEmail(email: string) {
+    return await db
+      .selectFrom('User')
+      .where('email', '=', email)
+      .selectAll()
+      .executeTakeFirst();
   }
 }

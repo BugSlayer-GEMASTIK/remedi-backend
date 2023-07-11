@@ -66,8 +66,7 @@ export class AuthService {
 
     if (user) throw new BadRequestException('Email is used');
 
-    db
-      .insertInto('User')
+    db.insertInto('User')
       .values({
         email,
         name,

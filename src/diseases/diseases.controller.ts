@@ -15,39 +15,62 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
 import { Roles } from 'src/auth/roles/roles.decorator';
+import { ResponseUtil } from 'src/common/utils/response.util';
 
 @Controller('disease')
 export class DiseasesController {
-  constructor(private readonly diseasesService: DiseasesService) {}
+  constructor(
+    private readonly diseasesService: DiseasesService,
+    private responseUtil: ResponseUtil,
+  ) {}
 
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
-  create(@Body() createDiseaseDto: CreateDiseaseDto) {
-    return this.diseasesService.create(createDiseaseDto);
+  async create(@Body() createDiseaseDto: CreateDiseaseDto) {
+    const disease = await this.diseasesService.create(createDiseaseDto);
+    return this.responseUtil.response(
+      { responseMessage: 'Disease created successfully' },
+      { disease },
+    );
   }
 
   @Get()
-  findAll() {
-    return this.diseasesService.findAll();
+  async findAll() {
+    const diseases = await this.diseasesService.findAll();
+    return this.responseUtil.response({}, { diseases });
   }
 
   @Get('query?')
-  findByCategory(@Query('category') category: string) {
-    return this.diseasesService.findByCategory(category);
+  async findByCategory(@Query('category') category: string) {
+    const diseases = await this.diseasesService.findByCategory(category);
+    return this.responseUtil.response({}, { diseases });
   }
 
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateDiseaseDto: UpdateDiseaseDto) {
-    return this.diseasesService.update(id, updateDiseaseDto);
+  async update(
+    @Param('id') id: number,
+    @Body() updateDiseaseDto: UpdateDiseaseDto,
+  ) {
+    const updatedDisease = await this.diseasesService.update(
+      id,
+      updateDiseaseDto,
+    );
+    return this.responseUtil.response(
+      { responseMessage: 'Disease updated successfully' },
+      { updatedDisease },
+    );
   }
 
   @Roles('DOCTOR')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.diseasesService.remove(id);
+  async remove(@Param('id') id: number) {
+    await this.diseasesService.remove(id);
+    return this.responseUtil.response({
+      responseMessage: 'Disease deleted successfully',
+    });
   }
 }

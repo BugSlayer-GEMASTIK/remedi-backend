@@ -1,22 +1,33 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateAllergyDto } from './dto/create-allergy.dto';
 import db from 'src/config/database';
 
 @Injectable()
 export class AllergiesService {
-  create(createAllergyDto: CreateAllergyDto) {
-    return db
+  async create(createAllergyDto: CreateAllergyDto) {
+    const { patientEmail, medicineId } = createAllergyDto;
+
+    const allergy = await db
+      .selectFrom('AllergyMedicine')
+      .where('patientEmail', '=', patientEmail)
+      .where('medicineId', '=', medicineId)
+      .selectAll()
+      .executeTakeFirst();
+
+    if (!!allergy) throw new BadRequestException('Allergy already exist');
+
+    return await db
       .insertInto('AllergyMedicine')
       .values({
-        patientEmail: createAllergyDto.patientEmail,
-        medicineId: createAllergyDto.medicineId,
+        patientEmail,
+        medicineId,
       })
       .returningAll()
       .executeTakeFirst();
   }
 
-  findByEmail(email: string) {
-    return db
+  async findByEmail(email: string) {
+    return await db
       .selectFrom('AllergyMedicine')
       .innerJoin('Medicine', 'Medicine.id', 'AllergyMedicine.medicineId')
       .where('AllergyMedicine.patientEmail', '=', email)
@@ -24,8 +35,8 @@ export class AllergiesService {
       .execute();
   }
 
-  remove(email: string, medicineId: number) {
-    return db
+  async remove(email: string, medicineId: number) {
+    return await db
       .deleteFrom('AllergyMedicine')
       .where(({ cmpr, and }) =>
         and([
