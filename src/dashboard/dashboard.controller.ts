@@ -1,32 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
+import { ResponseUtil } from 'src/common/utils/response.util';
+import { GetDashboardDTO } from './dashboard.DTO';
 
 @Controller('dashboard')
 export class DashboardController {
-  constructor(private readonly dashboardService: DashboardService) {}
+  constructor(
+    private readonly dashboardService: DashboardService,
+    private responseUtil: ResponseUtil,
+  ) {}
 
-  @Get()
-  async findAll() {
-    return await this.dashboardService.findAll();
-  }
-
-  @Get('provinsi/:provinsi')
-  async findByProvinsi(@Param('provinsi') provinsi: string) {
-    return await this.dashboardService.findByProvinsi(provinsi);
-  }
-
-  @Get('kota/:kota')
-  async findByKota(@Param('kota') kota: string) {
-    return await this.dashboardService.findByKota(kota);
-  }
-
-  @Get('kecamatan/:kecamatan')
-  async findByKecamatan(@Param('kecamatan') kecamatan: string) {
-    return await this.dashboardService.findByKecamatan(kecamatan);
-  }
-  
-  @Get('kelurahan/:kelurahan')
-  async findByKelurahan(@Param('kelurahan') kelurahan: string) {
-    return await this.dashboardService.findByKelurahan(kelurahan);
+  @Get('')
+  async find(@Query() query: GetDashboardDTO) {
+    const payload = await this.dashboardService.find(query);
+    return this.responseUtil.response({}, { payload });
   }
 }
