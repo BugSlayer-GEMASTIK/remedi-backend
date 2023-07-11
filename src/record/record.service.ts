@@ -37,7 +37,6 @@ export class RecordService {
     const createdRecord = await db
       .insertInto('Record')
       .values({
-        id: randomUUID(),
         doctorEmail: doctorEmail,
         patientEmail: patientEmail,
         description: description,
@@ -53,7 +52,7 @@ export class RecordService {
     return await db.selectFrom('Record').selectAll().execute();
   }
 
-  async getRecordById(id: string) {
+  async getRecordById(id: number) {
     const record = await db
       .selectFrom('Record')
       .where('id', '=', id)
@@ -67,7 +66,7 @@ export class RecordService {
     return record;
   }
 
-  async deleteRecordById(id: string, doctorEmail: string) {
+  async deleteRecordById(id: number, doctorEmail: string) {
     const record = await db
       .selectFrom('Record')
       .where('id', '=', id)

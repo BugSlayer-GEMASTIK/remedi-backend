@@ -19,15 +19,16 @@ model User {
   name              String?
   password          String?
   role              String?
-  location          Location          @relation(fields: [locationLatitude, locationLongitude], references: [latitude, longitude])
   birth_date        DateTime?
   phoneNumber       String?
   records           Record[]
   allergies         AllergyMedicine[]
   treatments        TreatmentUser[]
   labResults        LabResultUser[]
-  locationLatitude  Decimal
-  locationLongitude Decimal
+  provinsi          String?
+  kota              String?
+  kecamatan         String?
+  kelurahan         String?
 }
 
 model Record {
@@ -108,12 +109,4 @@ model LabResultUser {
   doctorEmail         String
   categoryType        LabResultCategory @relation(fields: [category], references: [id])
   patient             User              @relation(fields: [patientEmail], references: [email])
-}
-
-model Location {
-  latitude  Decimal
-  longitude Decimal
-  User      User[]
-
-  @@id([latitude, longitude])
 }

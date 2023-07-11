@@ -22,13 +22,9 @@ export type LabResultUser = {
   id: Generated<number>;
   category: number;
   patientEmail: string;
-  resultDocumentURL: string;
+  result_document_URL: string;
   description: string | null;
   doctorEmail: string;
-};
-export type Location = {
-  latitude: string;
-  longitude: string;
 };
 export type Medicine = {
   id: Generated<number>;
@@ -64,17 +60,18 @@ export type User = {
   name: string | null;
   password: string | null;
   role: string | null;
-  birthDate: Timestamp | null;
+  birth_date: Timestamp | null;
   phoneNumber: string | null;
-  locationLatitude: string;
-  locationLongitude: string;
+  provinsi: string | null;
+  kota: string | null;
+  kecamatan: string | null;
+  kelurahan: string | null;
 };
 export type DB = {
   AllergyMedicine: AllergyMedicine;
   Diagnose: Diagnose;
   LabResultCategory: LabResultCategory;
   LabResultUser: LabResultUser;
-  Location: Location;
   Medicine: Medicine;
   MedicineRecord: MedicineRecord;
   Record: Record;
