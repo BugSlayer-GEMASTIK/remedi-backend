@@ -18,6 +18,7 @@ import { LabResultCategoriesModule } from './lab-result-categories/lab-result-ca
 import { RecordModule } from './record/record.module';
 import { CommonModule } from './common/common.module';
 import { UserModule } from './user/user.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { UserModule } from './user/user.module';
     RecordModule,
     CommonModule,
     UserModule,
+    DashboardModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService, JwtStrategy],
