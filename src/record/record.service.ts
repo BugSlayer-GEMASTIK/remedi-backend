@@ -1,28 +1,19 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import db from 'src/config/database';
 import { CreateRecordDTO, UpdateRecordDTO } from './record.DTO';
-import { randomUUID } from 'crypto';
 
 @Injectable()
 export class RecordService {
   async createRecord(data: CreateRecordDTO) {
     const { doctorEmail, patientEmail, description, diagnoseName } = data;
 
-    const doctor = await db
-      .selectFrom('User')
-      .where('email', '=', doctorEmail)
-      .selectAll()
-      .executeTakeFirst();
+    const doctor = await this.getUserByEmail(doctorEmail);
 
     if (!doctor) {
       throw new BadRequestException('Doctor not found');
     }
 
-    const pasien = await db
-      .selectFrom('User')
-      .where('email', '=', patientEmail)
-      .selectAll()
-      .executeTakeFirst();
+    const pasien = await this.getUserByEmail(patientEmail);
 
     if (!pasien) {
       throw new BadRequestException('Patient not found');
@@ -37,7 +28,6 @@ export class RecordService {
     const createdRecord = await db
       .insertInto('Record')
       .values({
-        id: randomUUID(),
         doctorEmail: doctorEmail,
         patientEmail: patientEmail,
         description: description,
@@ -53,7 +43,7 @@ export class RecordService {
     return await db.selectFrom('Record').selectAll().execute();
   }
 
-  async getRecordById(id: string) {
+  async getRecordById(id: number) {
     const record = await db
       .selectFrom('Record')
       .where('id', '=', id)
@@ -67,7 +57,7 @@ export class RecordService {
     return record;
   }
 
-  async deleteRecordById(id: string, doctorEmail: string) {
+  async deleteRecordById(id: number, doctorEmail: string) {
     const record = await db
       .selectFrom('Record')
       .where('id', '=', id)
@@ -118,6 +108,12 @@ export class RecordService {
       throw new BadRequestException('Invalid doctor email');
     }
 
+    const pasien = await this.getUserByEmail(patientEmail);
+
+    if (!pasien) {
+      throw new BadRequestException('Patient not found');
+    }
+
     const diagnose = await db
       .selectFrom('Diagnose')
       .where('name', '=', diagnoseName)
@@ -137,5 +133,13 @@ export class RecordService {
       .executeTakeFirst();
 
     return { ...updatedRecord };
+  }
+
+  private async getUserByEmail(email: string) {
+    return await db
+      .selectFrom('User')
+      .where('email', '=', email)
+      .selectAll()
+      .executeTakeFirst();
   }
 }

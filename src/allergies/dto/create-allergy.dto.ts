@@ -1,4 +1,11 @@
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+
 export class CreateAllergyDto {
-    readonly patientEmail: string;
-    readonly medicineId: number
+  @IsString()
+  @IsNotEmpty()
+  readonly patientEmail: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  readonly medicineId: number;
 }

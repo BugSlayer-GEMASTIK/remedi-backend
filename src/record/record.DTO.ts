@@ -19,7 +19,7 @@ export class CreateRecordDTO {
 export class UpdateRecordDTO {
   @IsString()
   @IsNotEmpty()
-  id: string;
+  id: number;
 
   @IsString()
   @IsNotEmpty()

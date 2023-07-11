@@ -23,8 +23,12 @@ export class AuthService {
       throw new NotFoundException(
         `User with email ${authenticateDto.email} is not found`,
       );
-      
-    const isPasswordTheSame = await this.comparePassword(authenticateDto.password, user.password)
+
+    const isPasswordTheSame = await this.comparePassword(
+      authenticateDto.password,
+      user.password,
+    );
+
     if (!isPasswordTheSame) {
       throw new BadRequestException('Invalid password');
     }
@@ -42,12 +46,14 @@ export class AuthService {
     const {
       email,
       password,
-      locationLatitude,
-      locationLongitude,
       name,
       phoneNumber,
       birthDate,
       role,
+      provinsi,
+      kota,
+      kecamatan,
+      kelurahan,
     } = profileDto;
 
     const hashedPassword = await this.hashPassword(password);
@@ -60,33 +66,18 @@ export class AuthService {
 
     if (user) throw new BadRequestException('Email is used');
 
-    const location = await db
-      .selectFrom('Location')
-      .selectAll()
-      .where('latitude', '=', locationLatitude)
-      .where('longitude', '=', locationLongitude)
-      .executeTakeFirst();
-
-    if (!location) {
-      await db
-        .insertInto('Location')
-        .values({
-          latitude: locationLatitude,
-          longitude: locationLongitude,
-        })
-        .execute();
-    }
-
     db.insertInto('User')
       .values({
-        email: email,
-        name: name,
+        email,
+        name,
         password: hashedPassword,
-        role: role,
-        birthDate: birthDate,
-        phoneNumber: phoneNumber,
-        locationLatitude: locationLatitude,
-        locationLongitude: locationLongitude,
+        birthDate,
+        phoneNumber,
+        role,
+        provinsi,
+        kota,
+        kecamatan,
+        kelurahan,
       })
       .execute();
   }

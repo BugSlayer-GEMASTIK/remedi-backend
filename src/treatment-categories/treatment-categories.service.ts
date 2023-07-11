@@ -6,34 +6,35 @@ import db from 'src/config/database';
 @Injectable()
 export class TreatmentCategoriesService {
   create(createTreatmentCategoryDto: CreateTreatmentCategoryDto) {
-    return db.insertInto("TreatmentCategory")
-            .values({
-              category: createTreatmentCategoryDto.category
-            })
-            .returningAll()
-            .executeTakeFirst();
+    return db
+      .insertInto('TreatmentCategory')
+      .values({
+        category: createTreatmentCategoryDto.category,
+      })
+      .returningAll()
+      .executeTakeFirst();
   }
 
   findAll() {
-    return db.selectFrom("TreatmentCategory")
-            .selectAll()
-            .execute();
+    return db.selectFrom('TreatmentCategory').selectAll().execute();
   }
 
   update(id: number, updateTreatmentCategoryDto: UpdateTreatmentCategoryDto) {
-    return db.updateTable("TreatmentCategory")
-            .set({
-              category: updateTreatmentCategoryDto.category
-            })
-            .where("TreatmentCategory.id", "=", id)
-            .returningAll()
-            .executeTakeFirst();
+    return db
+      .updateTable('TreatmentCategory')
+      .set({
+        category: updateTreatmentCategoryDto.category,
+      })
+      .where('TreatmentCategory.id', '=', id)
+      .returningAll()
+      .executeTakeFirst();
   }
 
   remove(id: number) {
-    return db.deleteFrom("TreatmentCategory")
-            .where("TreatmentCategory.id", "=", id)
-            .returningAll()
-            .executeTakeFirst();
+    return db
+      .deleteFrom('TreatmentCategory')
+      .where('TreatmentCategory.id', '=', id)
+      .returningAll()
+      .executeTakeFirst();
   }
 }

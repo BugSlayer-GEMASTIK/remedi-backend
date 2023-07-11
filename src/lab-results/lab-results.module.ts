@@ -4,6 +4,6 @@ import { LabResultsController } from './lab-results.controller';
 
 @Module({
   controllers: [LabResultsController],
-  providers: [LabResultsService]
+  providers: [LabResultsService],
 })
 export class LabResultsModule {}

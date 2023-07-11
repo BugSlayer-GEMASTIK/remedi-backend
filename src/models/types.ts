@@ -26,10 +26,6 @@ export type LabResultUser = {
   description: string | null;
   doctorEmail: string;
 };
-export type Location = {
-  latitude: string;
-  longitude: string;
-};
 export type Medicine = {
   id: Generated<number>;
   name: string;
@@ -66,15 +62,16 @@ export type User = {
   role: string | null;
   birthDate: Timestamp | null;
   phoneNumber: string | null;
-  locationLatitude: string;
-  locationLongitude: string;
+  provinsi: string | null;
+  kota: string | null;
+  kecamatan: string | null;
+  kelurahan: string | null;
 };
 export type DB = {
   AllergyMedicine: AllergyMedicine;
   Diagnose: Diagnose;
   LabResultCategory: LabResultCategory;
   LabResultUser: LabResultUser;
-  Location: Location;
   Medicine: Medicine;
   MedicineRecord: MedicineRecord;
   Record: Record;

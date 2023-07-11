@@ -1,3 +1,3 @@
 export class CreateLabResultCategoryDto {
-    readonly category: string
+  readonly category: string;
 }

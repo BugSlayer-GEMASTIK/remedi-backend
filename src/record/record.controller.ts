@@ -82,7 +82,6 @@ export class RecordController {
   @Get('/doctor')
   @HttpCode(HttpStatus.OK)
   async getAllDoctorRecords(@Req() req) {
-    console.log(req.user.email);
     const records = await this.recordService.getAllDoctorRecords(
       req.user.email,
     );
@@ -93,8 +92,7 @@ export class RecordController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
-  async getRecordById(@Param('id') id: string) {
-    console.log(id);
+  async getRecordById(@Param('id') id: number) {
     const record = await this.recordService.getRecordById(id);
     return this.responseUtil.response({}, { record });
   }
@@ -103,7 +101,7 @@ export class RecordController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Delete('/:id')
   @HttpCode(HttpStatus.OK)
-  async deleteRecordById(@Param('id') id: string, @Req() req) {
+  async deleteRecordById(@Param('id') id: number, @Req() req) {
     const doctorEmail = req.user.email;
     await this.recordService.deleteRecordById(id, doctorEmail);
     return this.responseUtil.response({

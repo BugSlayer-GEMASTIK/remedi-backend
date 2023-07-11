@@ -4,6 +4,6 @@ import { TreatmentCategoriesController } from './treatment-categories.controller
 
 @Module({
   controllers: [TreatmentCategoriesController],
-  providers: [TreatmentCategoriesService]
+  providers: [TreatmentCategoriesService],
 })
 export class TreatmentCategoriesModule {}

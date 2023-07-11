@@ -23,7 +23,10 @@ import { CommonModule } from './common/common.module';
     ConfigModule.forRoot(),
     AuthModule,
     PassportModule,
-    JwtModule.register({ secret: process.env.JWT_SECRET as string, signOptions: { expiresIn: '1h' } }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET as string,
+      signOptions: { expiresIn: '1h' },
+    }),
     MedicinesModule,
     DiseasesModule,
     AllergiesModule,
@@ -32,7 +35,7 @@ import { CommonModule } from './common/common.module';
     LabResultsModule,
     LabResultCategoriesModule,
     RecordModule,
-    CommonModule
+    CommonModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService, JwtStrategy],

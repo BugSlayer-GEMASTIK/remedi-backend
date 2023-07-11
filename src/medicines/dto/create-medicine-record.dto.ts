@@ -1,5 +1,15 @@
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+
 export class CreateMedicineRecordDto {
-    readonly recordId: number;
-    readonly medicineId: number;
-    readonly dose: string
+  @IsNumber()
+  @IsNotEmpty()
+  readonly recordId: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  readonly medicineId: number;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly dose: string;
 }
