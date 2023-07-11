@@ -3,7 +3,7 @@ type User = {
   name: string | null;
   password: string | null;
   role: string | null;
-  birth_date: Date | null;
+  birthDate: Date | null;
   phoneNumber: string | null;
   locationLatitude: string;
   locationLongitude: string;

@@ -23,8 +23,9 @@ export class AuthService {
       throw new NotFoundException(
         `User with email ${authenticateDto.email} is not found`,
       );
-
-    if (!this.comparePassword(authenticateDto.password, user.password)) {
+      
+    const isPasswordTheSame = await this.comparePassword(authenticateDto.password, user.password)
+    if (!isPasswordTheSame) {
       throw new BadRequestException('Invalid password');
     }
 
@@ -82,7 +83,7 @@ export class AuthService {
         name: name,
         password: hashedPassword,
         role: role,
-        birth_date: birthDate,
+        birthDate: birthDate,
         phoneNumber: phoneNumber,
         locationLatitude: locationLatitude,
         locationLongitude: locationLongitude,

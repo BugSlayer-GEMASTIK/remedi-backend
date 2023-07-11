@@ -31,7 +31,7 @@ model User {
 }
 
 model Record {
-  id           String           @default(uuid()) @id
+  id           Int           @id @default(autoincrement())
   doctorEmail  String
   patientEmail String
   createdAt    DateTime         @default(now())
@@ -39,26 +39,26 @@ model Record {
   diagnose     Diagnose?        @relation(fields: [diagnoseId], references: [id])
   patient      User             @relation(fields: [patientEmail], references: [email])
   medicines    MedicineRecord[]
-  diagnoseId   String?
+  diagnoseId   Int?
 }
 
 model Medicine {
-  id              String            @id @default(uuid())
+  id              Int            @id @default(autoincrement())
   name            String
   records         MedicineRecord[]
   AllergyMedicine AllergyMedicine[]
 }
 
 model Diagnose {
-  id       String   @id @default(uuid())
+  id       Int   @id @default(autoincrement())
   name     String
   category String
   records  Record[]
 }
 
 model MedicineRecord {
-  recordId   String
-  medicineId String
+  recordId   Int
+  medicineId Int
   dose       String
   record     Record   @relation(fields: [recordId], references: [id])
   medicine   Medicine @relation(fields: [medicineId], references: [id])
@@ -68,7 +68,7 @@ model MedicineRecord {
 
 model AllergyMedicine {
   patientEmail String
-  medicineId   String
+  medicineId   Int
   diagnosedAt  DateTime @default(now())
   patient      User     @relation(fields: [patientEmail], references: [email])
   medicine     Medicine @relation(fields: [medicineId], references: [id])
@@ -77,14 +77,14 @@ model AllergyMedicine {
 }
 
 model TreatmentCategory {
-  id         String          @id @default(uuid())
+  id         Int          @id @default(autoincrement())
   category   String
   treatments TreatmentUser[]
 }
 
 model TreatmentUser {
-  id           String            @id @default(uuid())
-  category     String
+  id           Int            @id @default(autoincrement())
+  category     Int
   patientEmail String
   treatmentAt  DateTime          @default(now())
   description  String?
@@ -94,14 +94,14 @@ model TreatmentUser {
 }
 
 model LabResultCategory {
-  id         String          @id @default(uuid())
+  id         Int          @id @default(autoincrement())
   category   String
   labResults LabResultUser[]
 }
 
 model LabResultUser {
-  id                  String            @id @default(uuid())
-  category            String
+  id                  Int            @id @default(autoincrement())
+  category            Int
   patientEmail        String
   result_document_URL String
   description         String?
