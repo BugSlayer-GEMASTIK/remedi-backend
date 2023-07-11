@@ -19,7 +19,7 @@ model User {
   name              String?
   password          String?
   role              String?
-  birth_date        DateTime?
+  birthDate         DateTime?
   phoneNumber       String?
   records           Record[]
   allergies         AllergyMedicine[]
@@ -104,7 +104,7 @@ model LabResultUser {
   id                  Int            @id @default(autoincrement())
   category            Int
   patientEmail        String
-  result_document_URL String
+  resultDocumentURL String
   description         String?
   doctorEmail         String
   categoryType        LabResultCategory @relation(fields: [category], references: [id])

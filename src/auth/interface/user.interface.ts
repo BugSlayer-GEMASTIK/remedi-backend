@@ -5,8 +5,10 @@ type User = {
   role: string | null;
   birthDate: Date | null;
   phoneNumber: string | null;
-  locationLatitude: string;
-  locationLongitude: string;
+  provinsi: string;
+  kota: string;
+  kecamatan: string;
+  kelurahan: string;
 };
 
 export interface IAuthenticate {

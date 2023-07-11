@@ -22,7 +22,7 @@ export type LabResultUser = {
   id: Generated<number>;
   category: number;
   patientEmail: string;
-  result_document_URL: string;
+  resultDocumentURL: string;
   description: string | null;
   doctorEmail: string;
 };
@@ -60,7 +60,7 @@ export type User = {
   name: string | null;
   password: string | null;
   role: string | null;
-  birth_date: Timestamp | null;
+  birthDate: Timestamp | null;
   phoneNumber: string | null;
   provinsi: string | null;
   kota: string | null;

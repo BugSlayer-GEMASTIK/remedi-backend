@@ -82,7 +82,6 @@ export class RecordController {
   @Get('/doctor')
   @HttpCode(HttpStatus.OK)
   async getAllDoctorRecords(@Req() req) {
-    console.log(req.user.email);
     const records = await this.recordService.getAllDoctorRecords(
       req.user.email,
     );
