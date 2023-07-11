@@ -21,7 +21,7 @@ import { ResponseUtil } from 'src/common/utils/response.util';
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private responseUitl: ResponseUtil,
+    private responseUtil: ResponseUtil,
   ) {}
 
   @Roles('DOCTOR')
@@ -31,29 +31,31 @@ export class AuthController {
     return res.status(HttpStatus.OK).json(req.user);
   }
 
-  @Post('login')
+  @Post('/login')
   @HttpCode(HttpStatus.OK)
   async login(@Res() res, @Body() authenticateDto: AuthenticateDto) {
     try {
       const response = await this.authService.authenticate(authenticateDto);
-      return this.responseUitl.response(
+      const data = this.responseUtil.response(
         { responseMessage: 'Successfully logged in' },
         { ...response },
       );
+      return res.status(HttpStatus.OK).json(data);
     } catch (error) {
       return res.status(error.status).json(error.response);
     }
   }
 
-  @Post('register')
+  @Post('/register')
   @HttpCode(HttpStatus.CREATED)
   async register(@Res() res, @Body() profileDto: ProfileDto) {
     try {
       await this.authService.register(profileDto);
-      return this.responseUitl.response({
+      const data = this.responseUtil.response({
         responseCode: HttpStatus.CREATED,
         responseMessage: `Email ${profileDto.email} is successfully registered`,
       });
+      return res.status(HttpStatus.CREATED).json(data);
     } catch (error) {
       return res.status(error.status).json(error.response);
     }

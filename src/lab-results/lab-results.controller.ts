@@ -27,7 +27,10 @@ export class LabResultsController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
   async create(@Req() req, @Body() createLabResultDto: CreateLabResultDto) {
-    return await this.labResultsService.create(createLabResultDto, req.user.email);
+    return await this.labResultsService.create(
+      createLabResultDto,
+      req.user.email,
+    );
   }
 
   @Roles('DOCTOR')

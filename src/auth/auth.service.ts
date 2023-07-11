@@ -39,6 +39,7 @@ export class AuthService {
       process.env.JWT_SECRET as string,
       { expiresIn },
     );
+
     return { user, token };
   }
 

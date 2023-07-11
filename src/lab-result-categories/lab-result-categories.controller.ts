@@ -25,7 +25,9 @@ export class LabResultCategoriesController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
   async create(@Body() createLabResultCategoryDto: CreateLabResultCategoryDto) {
-    return await this.labResultCategoriesService.create(createLabResultCategoryDto);
+    return await this.labResultCategoriesService.create(
+      createLabResultCategoryDto,
+    );
   }
 
   @Roles('DOCTOR')

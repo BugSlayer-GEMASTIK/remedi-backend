@@ -19,7 +19,10 @@ export class LabResultCategoriesService {
     return await db.selectFrom('LabResultCategory').selectAll().execute();
   }
 
-  async update(id: number, updateLabResultCategoryDto: UpdateLabResultCategoryDto) {
+  async update(
+    id: number,
+    updateLabResultCategoryDto: UpdateLabResultCategoryDto,
+  ) {
     return await db
       .updateTable('LabResultCategory')
       .set({

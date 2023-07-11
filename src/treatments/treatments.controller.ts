@@ -27,7 +27,10 @@ export class TreatmentsController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Post()
   async create(@Req() req, @Body() createTreatmentDto: CreateTreatmentDto) {
-    return await this.treatmentsService.create(createTreatmentDto, req.user.email);
+    return await this.treatmentsService.create(
+      createTreatmentDto,
+      req.user.email,
+    );
   }
 
   @Roles('DOCTOR')
