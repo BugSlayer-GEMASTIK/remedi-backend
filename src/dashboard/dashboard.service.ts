@@ -27,8 +27,8 @@ export class DashboardService {
       .innerJoin('User', 'User.email', 'Record.patientEmail')
       .select(['Diagnose.name'])
       .groupBy('Diagnose.name')
-      .select((eb) => eb.fn.count<number>('Diagnose.name').as('total_patient'))
-      .orderBy('total_patient', 'desc')
+      .select((eb) => eb.fn.count<number>('Diagnose.name').as('totalPatient'))
+      .orderBy('totalPatient', 'desc')
       .execute();
   }
 
@@ -40,8 +40,8 @@ export class DashboardService {
       .where('User.provinsi', '=', provinsi)
       .select(['Diagnose.name', 'User.provinsi'])
       .groupBy(['Diagnose.name', 'User.provinsi'])
-      .select((eb) => eb.fn.count<number>('Diagnose.name').as('total_patient'))
-      .orderBy('total_patient', 'desc')
+      .select((eb) => eb.fn.count<number>('Diagnose.name').as('totalPatient'))
+      .orderBy('totalPatient', 'desc')
       .execute();
   }
 
@@ -54,8 +54,8 @@ export class DashboardService {
       .where('User.kota', '=', kota)
       .select(['Diagnose.name', 'User.provinsi', 'User.kota'])
       .groupBy(['Diagnose.name', 'User.provinsi', 'User.kota'])
-      .select((eb) => eb.fn.count<number>('Diagnose.name').as('total_patient'))
-      .orderBy('total_patient', 'desc')
+      .select((eb) => eb.fn.count<number>('Diagnose.name').as('totalPatient'))
+      .orderBy('totalPatient', 'desc')
       .execute();
   }
 
@@ -78,8 +78,8 @@ export class DashboardService {
         'User.kota',
         'User.kecamatan',
       ])
-      .select((eb) => eb.fn.count<number>('Diagnose.name').as('total_patient'))
-      .orderBy('total_patient', 'desc')
+      .select((eb) => eb.fn.count<number>('Diagnose.name').as('totalPatient'))
+      .orderBy('totalPatient', 'desc')
       .execute();
   }
 
@@ -108,8 +108,8 @@ export class DashboardService {
         'User.kecamatan',
         'User.kelurahan',
       ])
-      .select((eb) => eb.fn.count<number>('Diagnose.name').as('total_patient'))
-      .orderBy('total_patient', 'desc')
+      .select((eb) => eb.fn.count<number>('Diagnose.name').as('totalPatient'))
+      .orderBy('totalPatient', 'desc')
       .execute();
   }
 }
