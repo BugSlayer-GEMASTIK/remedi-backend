@@ -1,6 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import db from 'src/config/database';
-import { CreateRecordDTO, UpdateRecordDTO } from './record.DTO';
+import {
+  CreateRecordDTO,
+  GetAllRecordsQuery,
+  UpdateRecordDTO,
+} from './record.DTO';
 
 @Injectable()
 export class RecordService {
@@ -39,7 +43,36 @@ export class RecordService {
     return { ...createdRecord };
   }
 
-  async getAllRecords() {
+  async getAllRecords(query: GetAllRecordsQuery, email: string, role: string) {
+    const { doctorEmail, patientEmail } = query;
+
+    if (role === 'PATIENT' && email !== patientEmail) {
+      throw new UnauthorizedException(
+        "You are not allowed to see other's record",
+      );
+    }
+
+    if (!!doctorEmail && !!patientEmail) {
+      return await db
+        .selectFrom('Record')
+        .where('patientEmail', '=', patientEmail)
+        .where('doctorEmail', '=', doctorEmail)
+        .selectAll()
+        .execute();
+    } else if (!!doctorEmail) {
+      return await db
+        .selectFrom('Record')
+        .where('doctorEmail', '=', doctorEmail)
+        .selectAll()
+        .execute();
+    } else if (!!patientEmail) {
+      return await db
+        .selectFrom('Record')
+        .where('patientEmail', '=', patientEmail)
+        .selectAll()
+        .execute();
+    }
+
     return await db.selectFrom('Record').selectAll().execute();
   }
 

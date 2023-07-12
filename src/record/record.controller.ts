@@ -13,7 +13,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { RecordService } from './record.service';
-import { CreateRecordDTO, UpdateRecordDTO } from './record.DTO';
+import {
+  CreateRecordDTO,
+  GetAllRecordsQuery,
+  UpdateRecordDTO,
+} from './record.DTO';
 import { ResponseUtil } from 'src/common/utils/response.util';
 import { Roles } from 'src/auth/roles/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt.guard';
@@ -43,10 +47,14 @@ export class RecordController {
     );
   }
 
+  @Roles('DOCTOR', 'PATIENT')
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @Get('/')
   @HttpCode(HttpStatus.OK)
-  async getAllRecords() {
-    const records = await this.recordService.getAllRecords();
+  async getAllRecords(@Query() query: GetAllRecordsQuery, @Req() req) {
+    const email = req.user.email;
+    const role = req.user.role;
+    const records = await this.recordService.getAllRecords(query, email, role);
     return this.responseUtil.response({}, { records });
   }
 

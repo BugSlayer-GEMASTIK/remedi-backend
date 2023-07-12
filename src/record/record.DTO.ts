@@ -38,3 +38,11 @@ export class UpdateRecordDTO {
   @IsString()
   medicineName: string;
 }
+
+export class GetAllRecordsQuery {
+  @IsString()
+  patientEmail: string;
+
+  @IsString()
+  doctorEmail: string;
+}
