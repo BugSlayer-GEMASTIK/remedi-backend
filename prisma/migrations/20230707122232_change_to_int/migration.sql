@@ -14,19 +14,19 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Record" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "doctorEmail" TEXT NOT NULL,
     "patientEmail" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "description" TEXT,
-    "diagnoseId" TEXT,
+    "diagnoseId" INTEGER,
 
     CONSTRAINT "Record_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Medicine" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
 
     CONSTRAINT "Medicine_pkey" PRIMARY KEY ("id")
@@ -34,7 +34,7 @@ CREATE TABLE "Medicine" (
 
 -- CreateTable
 CREATE TABLE "Diagnose" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "category" TEXT NOT NULL,
 
@@ -43,8 +43,8 @@ CREATE TABLE "Diagnose" (
 
 -- CreateTable
 CREATE TABLE "MedicineRecord" (
-    "recordId" TEXT NOT NULL,
-    "medicineId" TEXT NOT NULL,
+    "recordId" INTEGER NOT NULL,
+    "medicineId" INTEGER NOT NULL,
     "dose" TEXT NOT NULL,
 
     CONSTRAINT "MedicineRecord_pkey" PRIMARY KEY ("recordId","medicineId")
@@ -53,7 +53,7 @@ CREATE TABLE "MedicineRecord" (
 -- CreateTable
 CREATE TABLE "AllergyMedicine" (
     "patientEmail" TEXT NOT NULL,
-    "medicineId" TEXT NOT NULL,
+    "medicineId" INTEGER NOT NULL,
     "diagnosedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "AllergyMedicine_pkey" PRIMARY KEY ("patientEmail","medicineId")
@@ -61,7 +61,7 @@ CREATE TABLE "AllergyMedicine" (
 
 -- CreateTable
 CREATE TABLE "TreatmentCategory" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "category" TEXT NOT NULL,
 
     CONSTRAINT "TreatmentCategory_pkey" PRIMARY KEY ("id")
@@ -69,8 +69,8 @@ CREATE TABLE "TreatmentCategory" (
 
 -- CreateTable
 CREATE TABLE "TreatmentUser" (
-    "id" TEXT NOT NULL,
-    "category" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "category" INTEGER NOT NULL,
     "patientEmail" TEXT NOT NULL,
     "treatmentAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "description" TEXT,
@@ -81,7 +81,7 @@ CREATE TABLE "TreatmentUser" (
 
 -- CreateTable
 CREATE TABLE "LabResultCategory" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "category" TEXT NOT NULL,
 
     CONSTRAINT "LabResultCategory_pkey" PRIMARY KEY ("id")
@@ -89,8 +89,8 @@ CREATE TABLE "LabResultCategory" (
 
 -- CreateTable
 CREATE TABLE "LabResultUser" (
-    "id" TEXT NOT NULL,
-    "category" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "category" INTEGER NOT NULL,
     "patientEmail" TEXT NOT NULL,
     "result_document_URL" TEXT NOT NULL,
     "description" TEXT,
