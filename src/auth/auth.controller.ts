@@ -24,11 +24,13 @@ export class AuthController {
     private responseUtil: ResponseUtil,
   ) {}
 
-  @Roles('DOCTOR')
+  @Roles('DOCTOR', 'PATIENT')
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @Get()
-  async profile(@Req() req, @Res() res) {
-    return res.status(HttpStatus.OK).json(req.user);
+  @Get('/user')
+  async getUser(@Req() req) {
+    const email = req.user.email;
+    const user = await this.authService.getUser(email);
+    return this.responseUtil.response({}, { user });
   }
 
   @Post('/login')

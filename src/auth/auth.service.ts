@@ -12,12 +12,16 @@ import { ProfileDto } from './dto/profile.dto';
 
 @Injectable()
 export class AuthService {
-  async authenticate(authenticateDto: AuthenticateDto): Promise<IAuthenticate> {
-    const user = await db
+  async getUser(email: string) {
+    return await db
       .selectFrom('User')
-      .where('email', '=', authenticateDto.email)
+      .where('email', '=', email)
       .selectAll()
       .executeTakeFirst();
+  }
+
+  async authenticate(authenticateDto: AuthenticateDto): Promise<IAuthenticate> {
+    const user = await this.getUser(authenticateDto.email);
 
     if (!user)
       throw new NotFoundException(
@@ -59,11 +63,7 @@ export class AuthService {
 
     const hashedPassword = await this.hashPassword(password);
 
-    const user = await db
-      .selectFrom('User')
-      .selectAll()
-      .where('email', '=', email)
-      .executeTakeFirst();
+    const user = await this.getUser(email);
 
     if (user) throw new BadRequestException('Email is used');
 
